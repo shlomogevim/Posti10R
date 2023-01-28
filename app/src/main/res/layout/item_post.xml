@@ -3,14 +3,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/itemLayout"
-    >
-    <include layout="@layout/front_card"
-        android:id="@+id/front_view"
-        />
-    <include layout="@layout/back_card"
-        android:id="@+id/back_view"
-        />
+    android:id="@+id/itemLayout" >
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

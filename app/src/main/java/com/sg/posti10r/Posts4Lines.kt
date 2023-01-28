@@ -1,8 +1,10 @@
 package com.sg.posti10r
 
+import com.sg.posti10r.tools.Utility
+
 
 class Posts4Lines {
-    val util=Utility()
+    val util= Utility()
 
 
 

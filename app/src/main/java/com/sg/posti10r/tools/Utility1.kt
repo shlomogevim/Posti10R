@@ -1,4 +1,4 @@
-package com.sg.posti10r
+package com.sg.posti10r.tools
 
 import android.content.Context
 
