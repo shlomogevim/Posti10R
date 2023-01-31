@@ -6,25 +6,44 @@ import android.util.Log
 import android.view.WindowManager
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.sg.posti10r.tools.CenterZoomLayout
 
 class MainActivity : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         supportActionBar?.hide()
-        val drawPostHelper = DrawPostHelper()
-        val constraintLayout = findViewById<ConstraintLayout>(R.id.constraint_layout)
 
-
-        val posts = Posts4Lines().createPosts()
-         createRecyclerView(posts)
-//        posts.forEach { logi("${it.postText.toString()}") }
-
-
+        downloadAllPost()
     }
+
+    fun downloadAllPost(): ArrayList<Post> {
+        var posts = ArrayList<Post>()
+        FirebaseFirestore.getInstance().collection(POST_REF)
+            // .orderBy(Constants.POST_TIME_STAMP, Query.Direction.DESCENDING)
+            .whereGreaterThanOrEqualTo(POST_NUM, 4999050)
+            .whereLessThanOrEqualTo(POST_NUM, 4999071)
+            .addSnapshotListener { value, error ->
+                if (value != null) {
+                    for (doc in value.documents) {
+                        val post = DownloadPostsFromFirestore().retrivePostFromFirestore(doc)
+                        posts.add(post)
+                    }
+                    createRecyclerView(posts)
+                    logi("Main posts.size=${posts.size}")
+//                    pref.edit().putInt(SHARPREF_TOTAL_POSTS_SIZE, posts.size).apply()
+//                    retriveGradeMapFromSharPref()
+//                    savePosts()
+                }
+            }
+        return posts
+    }
+
     private fun createRecyclerView(posts: ArrayList<Post>) {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         val layoutManger = CenterZoomLayout(this)
@@ -42,26 +61,7 @@ class MainActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
 
-
-
-
-
     fun logi(message: String) {
         Log.i("gg", message)
     }
 }
-/* private fun createRecyclerView(posts: ArrayList<Post>) {
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val animator = DefaultItemAnimator()
-        animator.addDuration = 1000L
-        animator.removeDuration = 1000L
-        recyclerView.itemAnimator = animator
-
-        val adapter = PostAdapter(posts)
-        recyclerView.adapter = adapter
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.layoutManager = layoutManager
-        val snapHelper = PagerSnapHelper()
-        snapHelper.attachToRecyclerView(recyclerView)
-    }
-*/

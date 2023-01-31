@@ -156,44 +156,4 @@ class DrawPostHelper: AppCompatActivity() {
 
 
 
-
-
-
-
-    /* fun Context.dpToPx(dp: Int): Float {
-         return dp * resources.displayMetrics.density
-     }*/
-//    fun dp(numf:Int):Int{
-//        return  layout.context.dpToPx(margin1).toInt()
-//    }
-
-
-    /*
-      val textView = TextView(context)
-//        textView.text = post.text
-      textView.text = "מה קורה מלך"
-      textView.textSize = 20f
-      textView.setTextColor(Color.BLACK)
-      textView.id = View.generateViewId()
-      val layoutParams = ConstraintLayout.LayoutParams(
-          ConstraintLayout.LayoutParams.WRAP_CONTENT,
-          ConstraintLayout.LayoutParams.WRAP_CONTENT
-      )
-      layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
-      layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
-      layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-      layoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-      layoutParams.topMargin = 20
-      layoutParams.leftMargin = 20
-      layoutParams.rightMargin = 20
-      layoutParams.bottomMargin = 20
-      layoutParams.dimensionRatio = "1:1"
-      textView.layoutParams = layoutParams
-      constraintLayout.addView(textView)*/
-
-
-    /*  fun dpToPx(dp: Int): Int {
-          val density = resources.displayMetrics.density
-          return (dp * density + 0.5f).toInt()
-      }*/
 }
