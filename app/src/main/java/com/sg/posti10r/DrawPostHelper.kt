@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
@@ -14,24 +15,82 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
+import com.sg.posti10r.tools.Helper
+import com.sg.posti10r.tools.Helper1
 
 class DrawPostHelper: AppCompatActivity() {
-    val helper=Helper()
+    val helper= Helper()
     lateinit var layout: ConstraintLayout
     //    lateinit var currentPost:Post
     var position1=""
     var margin1=0
     var dis1=0
     fun drawPost( constraintLayout: ConstraintLayout, currentPost: Post) {
-        layout=constraintLayout
-        setCurrentParameters(currentPost)
-      loadImage(constraintLayout, currentPost)
-      createText(constraintLayout,currentPost)
+        var post=updateTextLocation(currentPost)
 
+        layout=constraintLayout
+       setCurrentParameters(post)
+      loadImage(constraintLayout, post)
+      createText(constraintLayout,post)
+//        logi("34      currentPost.postNum=${currentPost.postNum}")
+
+//       ***********
+        drawHelperPostNum(currentPost,constraintLayout)
+//      ***********
     }
-    private fun setCurrentParameters(currentPost:Post) {
+
+    private fun updateTextLocation(post: Post): Post {
+       val post1=updateTextSize(post)
+       when (post1.postNum){
+            4999000,4999034,4999035->{post1. textLocation = arrayListOf(10,-1,0,0,0,0, 0, 0) }                         //up
+            4999009,4999013, 4999014,4999015,4999016,4999018,4999019,4999020,4999025,4999028,4999029,4999030,4999031,4999032,4999033,4999036,4999037,4999038->{ post1. textLocation = arrayListOf(10,0,0,-1,0,0, 0, 0) }                        //down
+            4999004,4999012->{ post1. textLocation = arrayListOf(10,5,0,-1,0,0, 0, 0) }
+          /*  4999014->{ post1. textLocation = arrayListOf(10,5,0,-1,0,0, 0, 0)
+                post1.postTransparency=10
+                post1.postBackground =  "#000000"
+            }*/
+        }
+        return post1
+    }
+    private fun updateTextSize(post: Post): Post {
+//        logi((" 57  ${post.postNum}"))
+      val post1=updateBackGroundColor(post)
+        when (post1.postNum){
+                4999029->{post1.postTextSize =arrayListOf(0, 14) }
+            4999002,4999007->{post1.postTextSize =arrayListOf(0, 15) }
+            4999003,4999005,4999006,4999008,4999009,4999012,4999015,4999016,4999017,4999021,4999027,4999031,4999032,4999039,4999040->{post1.postTextSize =arrayListOf(0, 16) }
+
+        }
+        return post1
+    }
+    private fun updateBackGroundColor(post: Post): Post {
+        logi((" 68  ${post.postNum}"))
+       val post1=updatePostTransparency(post)
+
+        when (post1.postNum){
+            4999014,4999025,4999039-> post1.postBackground =  "#000000"
+
+        }
+        return post1
+    }
+    private fun updatePostTransparency(post: Post): Post {
+        logi((" 78  ${post.postNum}"))
+       val post1 = post.copy()
+        when (post1.postNum){
+            4999025,4999014,4999039-> post1.postTransparency=10
+            4999026-> post1.postTransparency=3
+
+        }
+        return post1
+    }
+
+    private fun drawHelperPostNum(currentPost: Post, constraintLayout: ConstraintLayout) {
+        Helper1().createCenteredTextView2(currentPost.postNum.toString(),constraintLayout)
+    }
+     private fun setCurrentParameters(post:Post) {
         //    textLocation = arrayListOf(10,-1, 33,10,0,0, 0, 0)
-        val dataAr =currentPost.textLocation
+      //  var post1=update_post(currentPost)
+        val dataAr =post.textLocation
         dis1 = dataAr[2]
         if (dataAr[1] == -1) {
             position1 =TOP
@@ -44,8 +103,10 @@ class DrawPostHelper: AppCompatActivity() {
 //        logi("56 dis1=$dis1        position1=$position1     margin1=$margin1")
     }
     private fun createText(constraintLayout: ConstraintLayout, post:Post) {
+
+//        logi("61   post1.postNum=${post1.postNum}    ")
+//        logi("62   post1.textlocation=${post1.textLocation}    ")
         //    textLocation = arrayListOf(10,-1, 33,10,0,0, 0, 0)
-//        val mainLayout = createMainLayout(this,post)
         val mainLayout = createLinearLayout(layout.context,post)
         mainLayout.id = View.generateViewId()
         constraintLayout.addView(mainLayout)
@@ -61,6 +122,7 @@ class DrawPostHelper: AppCompatActivity() {
         constraintSet.applyTo(constraintLayout)
         //setContentView(constraintLayout)
     }
+
     fun createLinearLayout(context: Context,post:Post): LinearLayout {
         val ll1 = LinearLayout(context)
         ll1.orientation = LinearLayout.VERTICAL
@@ -91,6 +153,7 @@ class DrawPostHelper: AppCompatActivity() {
    }
 
     private fun createTextView(context: Context, post:Post, index:Int): TextView {
+        //var post=update_post(post1)
         val textView = TextView(context)
         textView.id = View.generateViewId()
        textView.gravity = Gravity.CENTER_HORIZONTAL
@@ -151,7 +214,9 @@ class DrawPostHelper: AppCompatActivity() {
 
 
 
-
+    fun logi(message: String) {
+        Log.i("gg", message)
+    }
 
 
 
