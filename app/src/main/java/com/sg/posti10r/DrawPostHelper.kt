@@ -25,8 +25,8 @@ class DrawPostHelper: AppCompatActivity() {
     var position1=""
     var margin1=0
     var dis1=0
-    fun drawPost( constraintLayout: ConstraintLayout, currentPost: Post) {
-        var post=updateTextLocation(currentPost)
+    fun drawPost( constraintLayout: ConstraintLayout, post: Post) {
+       // var post=updateTextLocation(currentPost)
 
         layout=constraintLayout
        setCurrentParameters(post)
@@ -35,51 +35,42 @@ class DrawPostHelper: AppCompatActivity() {
 //        logi("34      currentPost.postNum=${currentPost.postNum}")
 
 //       ***********
-        drawHelperPostNum(currentPost,constraintLayout)
+    //    drawHelperPostNum(post,constraintLayout)
 //      ***********
     }
 
     private fun updateTextLocation(post: Post): Post {
        val post1=updateTextSize(post)
        when (post1.postNum){
-            4999000,4999034,4999035->{post1. textLocation = arrayListOf(10,-1,0,0,0,0, 0, 0) }                         //up
+            4999000,4999034,4999035,4999053->{post1. textLocation = arrayListOf(10,-1,0,0,0,0, 0, 0) }                         //up
             4999009,4999013, 4999014,4999015,4999016,4999018,4999019,4999020,4999025,4999028,4999029,4999030,4999031,4999032,4999033,4999036,4999037,4999038->{ post1. textLocation = arrayListOf(10,0,0,-1,0,0, 0, 0) }                        //down
+            4999048,4999051,4999052,4999054,4999058,4999059,4999071->{ post1. textLocation = arrayListOf(10,0,0,-1,0,0, 0, 0) }                        //down
             4999004,4999012->{ post1. textLocation = arrayListOf(10,5,0,-1,0,0, 0, 0) }
-          /*  4999014->{ post1. textLocation = arrayListOf(10,5,0,-1,0,0, 0, 0)
-                post1.postTransparency=10
-                post1.postBackground =  "#000000"
-            }*/
-        }
+                }
         return post1
     }
     private fun updateTextSize(post: Post): Post {
 //        logi((" 57  ${post.postNum}"))
       val post1=updateBackGroundColor(post)
         when (post1.postNum){
-                4999029->{post1.postTextSize =arrayListOf(0, 14) }
+                4999029,4999058,4999059->{post1.postTextSize =arrayListOf(0, 14) }
             4999002,4999007->{post1.postTextSize =arrayListOf(0, 15) }
             4999003,4999005,4999006,4999008,4999009,4999012,4999015,4999016,4999017,4999021,4999027,4999031,4999032,4999039,4999040->{post1.postTextSize =arrayListOf(0, 16) }
-
         }
         return post1
     }
     private fun updateBackGroundColor(post: Post): Post {
-        logi((" 68  ${post.postNum}"))
        val post1=updatePostTransparency(post)
-
         when (post1.postNum){
             4999014,4999025,4999039-> post1.postBackground =  "#000000"
-
         }
         return post1
     }
     private fun updatePostTransparency(post: Post): Post {
-        logi((" 78  ${post.postNum}"))
        val post1 = post.copy()
         when (post1.postNum){
-            4999025,4999014,4999039-> post1.postTransparency=10
+            4999025,4999014,4999039,4999052,4999071-> post1.postTransparency=10
             4999026-> post1.postTransparency=3
-
         }
         return post1
     }
