@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 
@@ -21,7 +22,12 @@ class PostAdapter(val posts: ArrayList<Post>) : RecyclerView.Adapter<PostAdapter
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.layout.animation=AnimationUtils.loadAnimation(holder.itemView.context,R.anim.alpha)
+//        holder.layout.animation=AnimationUtils.loadAnimation(holder.itemView.context,R.anim.rotate)
+//        holder.layout.animation=AnimationUtils.loadAnimation(holder.itemView.context,R.anim.scale)
+//        holder.layout.animation=AnimationUtils.loadAnimation(holder.itemView.context,R.anim.translate)
         holder.bindItems(posts[position])
+
     }
 
     override fun getItemCount(): Int {
@@ -29,7 +35,8 @@ class PostAdapter(val posts: ArrayList<Post>) : RecyclerView.Adapter<PostAdapter
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val layout = itemView?.findViewById<ConstraintLayout>(R.id.itemLayout)
+
+        val layout = itemView?.findViewById<ConstraintLayout>(R.id.itemLayout)!!
         fun bindItems(post: Post) {
             DrawPostHelper().drawPost(layout, post)
         }

@@ -4,19 +4,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
+import android.view.animation.OvershootInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.rpc.Help
 import com.sg.posti10r.tools.CenterZoomLayout
 import com.sg.posti10r.tools.Helper
+import jp.wasabeef.recyclerview.animators.OvershootInRightAnimator
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator
+import jp.wasabeef.recyclerview.animators.SlideInRightAnimator
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 
 class MainActivity : AppCompatActivity() {
 
-   /* val  minPostNim=4999000
-    val maxPOstNum=4999071*/
-   val  minPostNim=4999046
-    val maxPOstNum=4999050
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,32 +30,18 @@ class MainActivity : AppCompatActivity() {
         downloadAllPost()
     }
 
-   /* fun downloadAllPost(): ArrayList<Post> {
-        var posts = ArrayList<Post>()
-        FirebaseFirestore.getInstance().collection(POST_REF)
-            // .orderBy(Constants.POST_TIME_STAMP, Query.Direction.DESCENDING)
-            .whereGreaterThanOrEqualTo(POST_NUM,minPostNim )
-            .whereLessThanOrEqualTo(POST_NUM,maxPOstNum )
-            .addSnapshotListener { value, error ->
-                if (value != null) {
-                    for (doc in value.documents) {
-                        val post = Helper().retrivePostFromFirestore(doc)
-                       post.textLocation[2]=0
-//                        logi("38 .postNum= ${post.postNum}    .posttextLocation= ${post.textLocation}")
-                        posts.add(post)
-                    }
-                    createRecyclerView(posts)
-//                    logi("Main posts.size=${posts.size}")
-//                    pref.edit().putInt(SHARPREF_TOTAL_POSTS_SIZE, posts.size).apply()
-//                    retriveGradeMapFromSharPref()
-//                    savePosts()
-                }
-            }
-        return posts
-    }*/
+
    fun downloadAllPost(): ArrayList<Post> {
        var posts = ArrayList<Post>()
-       val ranges = listOf(Pair(100, 103), Pair(29910, 29913), Pair(3999010, 3999019), Pair(4999060, 4999072))
+
+       val ranges = listOf(Pair(100, 103),
+           Pair(29900, 29915),Pair(296, 299),
+//           Pair(3999000, 3999021),Pair(3990, 39999),
+//           Pair(4999050, 4999075),
+//           Pair(5999000, 5999006), Pair(596, 599),
+//           Pair(649, 655),
+//           Pair(718, 719)
+             )
        for (range in ranges) {
            FirebaseFirestore.getInstance().collection(POST_REF)
                .whereGreaterThanOrEqualTo(POST_NUM, range.first)
@@ -72,48 +61,28 @@ class MainActivity : AppCompatActivity() {
    }
 
 
-  /*  private fun createRecyclerView(posts: ArrayList<Post>) {
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val layoutManger = CenterZoomLayout(this)
-        layoutManger.orientation = LinearLayoutManager.HORIZONTAL
-        layoutManger.reverseLayout = true
-        recyclerView.layoutManager =layoutManger
-
-        val snapHelper=PagerSnapHelper()
-       recyclerView.setOnFlingListener(null)
-        snapHelper.attachToRecyclerView(recyclerView)
-
-        val adapter = PostAdapter(posts)
-        recyclerView.adapter = adapter
-        recyclerView.setHasFixedSize(true)
-        adapter.notifyDataSetChanged()
-    }*/
   private fun createRecyclerView(posts: ArrayList<Post>) {
       val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
       val layoutManger = CenterZoomLayout(this)
       layoutManger.orientation = LinearLayoutManager.HORIZONTAL
       layoutManger.reverseLayout = true
-      recyclerView.layoutManager =layoutManger
+      recyclerView.layoutManager = layoutManger
 
-      val snapHelper=PagerSnapHelper()
+      val snapHelper = PagerSnapHelper()
       recyclerView.setOnFlingListener(null)
       snapHelper.attachToRecyclerView(recyclerView)
 
       val adapter = PostAdapter(posts)
       recyclerView.adapter = adapter
       recyclerView.setHasFixedSize(true)
+      //adapter.notifyDataSetChanged()
 
-      // Add ItemAnimator
-     /* val timming = 10000L // Change the duration here
-      val itemAnimator = DefaultItemAnimator().apply {
-          addDuration = timming
-          removeDuration = timming
-      }*/
-//      recyclerView.itemAnimator = itemAnimator
+      recyclerView.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
 
-      adapter.notifyDataSetChanged()
+
+
+
   }
-
 
     fun logi(message: String) {
         Log.i("gg", message)
